@@ -1,0 +1,41 @@
+name: 'Lint Code'
+
+on:
+  push:
+    branches: [master, main]
+
+  pull_request:
+    branches: [master, main]
+
+jobs:
+
+  lint_python:
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - uses: actions/checkout@v3
+
+    - uses: actions/setup-python@v4
+      with:
+        python-version: 3.12
+
+    - run: |
+        pip install flake8
+        find . -name "*.py" -exec flake8 {} +
+
+  lint_js:
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - uses: actions/checkout@v3
+
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 14
+
+    - run: npm install jshint --global
+
+    - run: |
+        find . -name "*.js" -exec jshint {} +
